@@ -1,0 +1,179 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: var(--font-manrope), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --color-canvas: #f6f6f4;
+  --color-hairline: rgb(28 25 23 / 0.08);
+  --color-hairline-strong: rgb(28 25 23 / 0.16);
+
+  --radius-tile: 1.25rem;
+
+  --shadow-tile: 0 1px 2px rgb(16 24 40 / 0.04), 0 1px 3px rgb(16 24 40 / 0.05);
+  --shadow-tile-hover: 0 14px 30px -16px rgb(16 24 40 / 0.24), 0 2px 6px rgb(16 24 40 / 0.06);
+  --shadow-pop: 0 24px 48px -24px rgb(16 24 40 / 0.32), 0 4px 12px -4px rgb(16 24 40 / 0.1);
+  --shadow-glow: 0 10px 24px -12px rgb(79 70 229 / 0.7);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+
+  --animate-fade-up: fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-fade-in: fade-in 0.35s ease-out both;
+  --animate-pop: pop 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-slide-in-right: slide-in-right 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-scale-in: scale-in 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-shimmer: shimmer 1.8s linear infinite;
+  --animate-dot: dot 1.4s ease-in-out infinite;
+  --animate-ping-soft: ping-soft 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes pop {
+    from { opacity: 0; transform: translateY(8px) scale(0.985); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  @keyframes slide-in-right {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes scale-in {
+    from { opacity: 0; transform: scale(0.96); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  @keyframes shimmer {
+    from { background-position: 200% 0; }
+    to { background-position: -200% 0; }
+  }
+  @keyframes dot {
+    0%, 80%, 100% { transform: scale(0.5); opacity: 0.35; }
+    40% { transform: scale(1); opacity: 1; }
+  }
+  @keyframes ping-soft {
+    0% { transform: scale(1); opacity: 0.55; }
+    100% { transform: scale(2.4); opacity: 0; }
+  }
+}
+
+:root {
+  color-scheme: light;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-canvas);
+  background-image:
+    radial-gradient(55% 45% at 0% 0%, rgb(99 102 241 / 0.08), transparent 65%),
+    radial-gradient(45% 40% at 100% 0%, rgb(219 39 119 / 0.06), transparent 65%);
+  background-attachment: fixed;
+  color: #1c1917;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11", "ss01";
+}
+
+::selection {
+  background: rgb(79 70 229 / 0.18);
+}
+
+/* Bento tile */
+.tile {
+  background: #ffffff;
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-tile);
+  box-shadow: var(--shadow-tile);
+}
+.tile-hover {
+  transition:
+    transform 0.4s var(--ease-out-expo),
+    box-shadow 0.4s var(--ease-out-expo),
+    border-color 0.25s ease;
+}
+.tile-hover:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-tile-hover);
+  border-color: var(--color-hairline-strong);
+}
+.tile-soft {
+  background: rgb(255 255 255 / 0.6);
+  border: 1px dashed var(--color-hairline-strong);
+  border-radius: var(--radius-tile);
+}
+
+/* Typography helpers */
+.eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #78716c;
+}
+.display {
+  font-family: var(--font-display);
+  letter-spacing: -0.025em;
+}
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Loading */
+.skeleton {
+  background: linear-gradient(90deg, #ecebe8 25%, #f6f6f4 50%, #ecebe8 75%);
+  background-size: 200% 100%;
+  animation: var(--animate-shimmer);
+  border-radius: 9999px;
+}
+
+/* Scrollbars */
+.scroll-thin {
+  scrollbar-width: thin;
+  scrollbar-color: #d6d3d1 transparent;
+}
+.scroll-thin::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.scroll-thin::-webkit-scrollbar-thumb {
+  background: #d6d3d1;
+  border-radius: 9999px;
+}
+
+/* Stagger helper: children get increasing delays */
+.stagger > * {
+  animation: var(--animate-fade-up);
+}
+.stagger > *:nth-child(1) { animation-delay: 0ms; }
+.stagger > *:nth-child(2) { animation-delay: 50ms; }
+.stagger > *:nth-child(3) { animation-delay: 100ms; }
+.stagger > *:nth-child(4) { animation-delay: 150ms; }
+.stagger > *:nth-child(5) { animation-delay: 200ms; }
+.stagger > *:nth-child(6) { animation-delay: 250ms; }
+.stagger > *:nth-child(7) { animation-delay: 300ms; }
+.stagger > *:nth-child(8) { animation-delay: 350ms; }
+.stagger > *:nth-child(9) { animation-delay: 400ms; }
+.stagger > *:nth-child(n + 10) { animation-delay: 450ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
